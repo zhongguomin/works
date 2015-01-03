@@ -1,0 +1,40 @@
+
+navigation bar
+
+PhoneWindowManager.java
+	setInitialDisplaySize
+
+        // SystemUI (status bar) layout policy
+        int shortSizeDp = shortSize * DisplayMetrics.DENSITY_DEFAULT / density;
+        
+        String tabeltUI = Build.TABLETUI;
+
+        if("true".equals(tabeltUI)){
+            // tabeltUI=true: "tablet" UI with a single combined status & navigation bar
+            mHasSystemNavBar = true;
+            mNavigationBarCanMove = false;
+        } else if (shortSizeDp < 600) {
+            // 0-599dp: "phone" UI with a separate status & navigation bar
+            mHasSystemNavBar = false;
+            mNavigationBarCanMove = true;
+        } else if (shortSizeDp < 720) {
+            // 600+dp: "phone" UI with modifications for larger screens
+            mHasSystemNavBar = false;
+            mNavigationBarCanMove = false;
+        }
+	
+./base/core/java/android/os/Build.java	
+	/**a property to tablet systemUI */ 
+	public static final String TABLETUI = getString("ro.property.tabletUI");
+
+
+device/softwinner/wing-s738/wing_s738.mk
+	PRODUCT_PROPERTY_OVERRIDES += \
+	dalvik.vm.heapsize=80m \
+	persist.sys.usb.config=mass_storage,adb \
+	ro.property.tabletUI=true \
+	ro.udisk.lable=WING \
+	ro.product.firmware=v1.2rc \
+
+
+
