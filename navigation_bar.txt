@@ -1,6 +1,19 @@
 
 navigation bar
 
+问题描述
+=============================================================================
+系统默认导航栏位于桌面右边，目前需要让导航栏显示在底部，
+由于系统设置了旋转 270 度
+	见属性设置
+		ro.sf.hwrotation=270
+		persist.panel.orientation=270
+导致当导航栏放在底部时，导航栏上的按钮显示却是以竖排方式
+
+
+
+参考资料
+=============================================================================
 PhoneWindowManager.java
 	setInitialDisplaySize
 
@@ -35,6 +48,78 @@ device/softwinner/wing-s738/wing_s738.mk
 	ro.property.tabletUI=true \
 	ro.udisk.lable=WING \
 	ro.product.firmware=v1.2rc \
+
+
+
+
+解决办法
+=============================================================================
+
+diff --git a/packages/SystemUI/src/com/android/systemui/statusbar/phone/NavigationBarView.java b/packages/SystemUI/src/com/android/systemui/statusbar/phone/NavigationBa
+index 839016d..67396b3 100644
+--- a/packages/SystemUI/src/com/android/systemui/statusbar/phone/NavigationBarView.java
++++ b/packages/SystemUI/src/com/android/systemui/statusbar/phone/NavigationBarView.java
+@@ -32,6 +32,7 @@ import android.content.res.Resources;
+ import android.graphics.Point;
+ import android.graphics.Rect;
+ import android.graphics.drawable.Drawable;
++import android.os.Build;
+ import android.os.Handler;
+ import android.os.Message;
+ import android.os.RemoteException;
+@@ -507,7 +508,14 @@ public class NavigationBarView extends LinearLayout {
+         for (int i=0; i<4; i++) {
+             mRotatedViews[i].setVisibility(View.GONE);
+         }
+-        mCurrentView = mRotatedViews[rot];
++
++        // If product is b1400, force set the use rot0
++        if("b1400".equals(Build.PRODUCT)) {
++            mCurrentView = mRotatedViews[0];
++        } else {
++            mCurrentView = mRotatedViews[rot];
++        }
++
+         mCurrentView.setVisibility(View.VISIBLE);
+ 
+         mDeadZone = (DeadZone) mCurrentView.findViewById(R.id.deadzone);
+diff --git a/policy/src/com/android/internal/policy/impl/PhoneWindowManager.java b/policy/src/com/android/internal/policy/impl/PhoneWindowManager.java
+index 259a151..c232dd3 100644
+--- a/policy/src/com/android/internal/policy/impl/PhoneWindowManager.java
++++ b/policy/src/com/android/internal/policy/impl/PhoneWindowManager.java
+@@ -47,6 +47,7 @@ import android.media.IAudioService;
+ import android.media.Ringtone;
+ import android.media.RingtoneManager;
+ import android.os.Bundle;
++import android.os.Build;
+ import android.os.FactoryTest;
+ import android.os.Handler;
+ import android.os.IBinder;
+@@ -2848,10 +2849,24 @@ public class PhoneWindowManager implements WindowManagerPolicy {
+                 // it to bubble up from the nav bar, because this needs to
+                 // change atomically with screen rotations.
+                 mNavigationBarOnBottom = (!mNavigationBarCanMove || displayWidth < displayHeight);
++
++
++                // If product is b1400, force set the nav bar on bottom,
++                // and set nav bar height 63 (default is 72)
++                if("b1400".equals(Build.PRODUCT)) {
++                    mNavigationBarOnBottom = true;
++                }
++
+                 if (mNavigationBarOnBottom) {
+                     // It's a system nav bar or a portrait screen; nav bar goes on bottom.
+                     int top = displayHeight - overscanBottom
+                             - mNavigationBarHeightForRotation[displayRotation];
++
++                    // If product is b1400, set nav bar hegith 63
++                    if("b1400".equals(Build.PRODUCT)) {
++                        top = 417; // height(480) - nav bar hegiht(63) = 417
++                    }
++
+                     mTmpNavigationFrame.set(0, top, displayWidth, displayHeight - overscanBottom);
+                     mStableBottom = mStableFullscreenBottom = mTmpNavigationFrame.top;
+                     if (transientNavBarShowing) {
 
 
 
