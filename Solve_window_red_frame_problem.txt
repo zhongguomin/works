@@ -1,0 +1,10 @@
+
+mStrictModeFlash	StrictModeFlash	一个红色的背景窗口，用于提示可能存在的内存泄露
+
+android4.0取消红框闪烁 
+画红色框的函数 /frameworks/base/ services/java/com/android/server/wm/StrictModeFlash.java
+setVisibility 用来显示和关闭红框。
+在base/services/java/com/android/server/wm/WindowManagerService.java里关闭调用显示setVisibility(on) 就可以取消。
+//mStrictModeFlash.setVisibility(on); //取消这一行。
+
+
