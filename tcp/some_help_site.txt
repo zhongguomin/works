@@ -1,0 +1,19 @@
+
+关于TCP长连接的一些简单代码
+http://blog.csdn.net/preferme/article/details/4739476
+
+Java实现的TCP长连接服务
+http://blog.csdn.net/Raytracer/article/details/1502717
+
+Java的socket长连接实例
+http://download.csdn.net/detail/hdken/3673808
+
+Java Socket 长连接实例
+http://download.csdn.net/detail/liuyanfeiyu8383/5562079
+
+java tcp socket实例
+http://blog.csdn.net/lijiecong/article/details/6335917
+
+基于Apache Mina实现的TCP长连接和短连接实例
+http://blog.csdn.net/peterwanghao/article/details/6900523
+
