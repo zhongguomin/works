@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.g365.softmanager"
+    android:versionCode="17"
+    android:versionName="1.7" >
+
+    <uses-sdk
+        android:minSdkVersion="8"
+       />
+
+    <!-- 联网权限 -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!-- 往sdcard中写入数据的权限 -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <!-- 在sdcard中创建/删除文件的权限 -->
+    <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT" />
+    <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS" />
+    <uses-permission android:name="com.android.launcher.permission.UNINSTALL_SHORTCUT" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    
+    
+
+    <application
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name" >
+
+        <!-- 禁止横屏竖屏切换 -->
+        <activity
+            android:name=".SoftManagerActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <uses-library android:name="android.test.runner" />
+
+        <activity
+            android:name="SoftUpdate"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="SoftUninstall"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="OtherSoftUpdate"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="ManagerInstallPackage"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="SoftwareMove"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="InstallNecessary"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="Soft_Main_FeedBack"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="Soft_Main_Abuot"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="AdWall"
+            android:theme="@style/Theme.HalfTranslucent.NoTitleBar" >
+        </activity>
+        <activity
+            android:name="SlideAdWall"
+            android:theme="@style/Theme.HalfTranslucent.NoTitleBar" >
+        </activity>
+
+        <!-- 注册监听器  监听用户安装和替换的应用 -->
+        <receiver android:name="com.g365.receiver.MonitorInstallRemoveReceiver" >
+            <intent-filter android:priority="1000" >
+                <action android:name="android.intent.action.PACKAGE_ADDED" />
+                <action android:name="android.intent.action.PACKAGE_REMOVED" />
+
+                <data android:scheme="package" />
+            </intent-filter>
+        </receiver>
+
+        <activity
+            android:name="com.g365.softmanager.CreateShortCut"
+            android:exported="true"
+            android:theme="@android:style/Theme.Dialog" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <receiver android:name="com.g365.receiver.MyReceiver" >
+            <intent-filter>
+                <action android:name="com.g365.softmanager.shortcut" />
+                <action android:name="com.g365.softmanager.inform" />
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_ADDED" />
+                <action android:name="android.intent.action.PACKAGE_REMOVED" />
+
+                <data android:scheme="package" />
+            </intent-filter>
+        </receiver>
+
+        <service android:name="com.g365.service.MyService" />
+    </application>
+
+    <instrumentation
+        android:name="android.test.InstrumentationTestRunner"
+        android:label="Tests for My App"
+        android:targetPackage="com.g365.softmanager" />
+
+</manifest>
