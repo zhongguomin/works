@@ -1,0 +1,8 @@
+# ignore cscope, tags files
+android_app/SoftManager/src/com/g365/cscope.files
+android_app/SoftManager/src/com/g365/cscope.in.out
+android_app/SoftManager/src/com/g365/cscope.out
+android_app/SoftManager/src/com/g365/cscope.po.out
+android_app/SoftManager/src/com/g365/do_cscope_tags.sh
+android_app/SoftManager/src/com/g365/tags
+
