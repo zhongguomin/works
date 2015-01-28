@@ -8,3 +8,10 @@ http://www.360doc.com/content/11/1201/00/1332348_168777741.shtml
   java多线程例子
   http://blog.csdn.net/bopzhou/article/details/5981818
 
+
+  Java Socket实战之六 使用NIO包实现Socket通信
+  http://blog.csdn.net/kongxx/article/details/7288896
+
+erverSocket
+http://blog.csdn.net/ljhabc1982/article/details/6788946
+
