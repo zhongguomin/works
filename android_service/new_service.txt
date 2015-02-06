@@ -1,0 +1,89 @@
+Add new System Service
+
+1	增加aidl文件
+	frameworks/base/core/java/android/datamanager/IDataManagerService.aidl
+
+	package android.datamanager;
+
+	interface IDataManagerService {
+		float setVersion(float version);
+		float getVersion();
+	}
+
+2	在目录
+	frameworks/base/services/java/com/android/server/datamanager
+	中增加 DataManagerService.java 实现 IDataManagerService.aidl 类
+
+3	在文件 
+	frameworks/base/services/java/com/android/server/SystemServer.java 
+	类中 run（）方法中增加
+
+	dataMgr = new DataManagerService(context);
+	ServiceManager.addService(Context.DATAMANAGER_SERVICE, dataMgr);
+
+4	在文件 
+	frameworks/base/core/java/android/content/Context.java 
+	中增加
+
+	public static final String DATAMANAGER_SERVICE = "datamanager"; 
+
+5	在文件 
+	frameworks/base/core/java/android/datamanager
+	中增加 DataManager.java
+
+6	在文件
+	frameworks/base/core/java/android/app/ContextImpl.java
+	中 registerService
+
+7	在 frameworks/base/Android.mk 中
+
+	LOCAL_SRC_FILES += \
+	下增加
+
+	core/java/android/datamanager/IDataManagerService.aidl \
+
+8	编译如下
+	首先编译 frameworks
+	make -j8 framework
+	编译后会生成framework.jar
+
+	然后编译 frameworks/base/services/java 的 service
+	make -j8 frameworks/base/services/java
+	编译后会生成 services.jar
+
+	编译应用
+	因为服务是自定义的，所有必须在自定义的sdk中编译才能使用。
+
+9	在应用调用如下：
+	导入import android.datamanager.DataManager;
+
+	用法
+	DataManager dataMgr = (DataManager)getSystemService(Context.DATAMANAGER_SERVICE);
+	float version = dataMgr.getVersion();
+
+	DEMO APK: development/apps/DataManager
+
+
+10	修改涉及文件
+	zhongguomin@vesmart3:~/workspace/b1400/qmss1135/LINUX/android/frameworks/base$ git status 
+	位于分支 local-msm8916-1135
+	要提交的变更：
+	  （使用 "git reset HEAD <file>..." 撤出暂存区）
+
+        修改:         Android.mk
+        修改:         core/java/android/app/ContextImpl.java
+        修改:         core/java/android/content/Context.java
+        新文件:       core/java/android/datamanager/DataManager.java
+        新文件:       core/java/android/datamanager/IDataManagerService.aidl
+        修改:         services/java/com/android/server/SystemServer.java
+        新文件:       services/java/com/android/server/datamanager/DataManagerService.java
+
+	尚未暂存以备提交的变更：
+	（使用 "git add <file>..." 更新要提交的内容）
+	（使用 "git checkout -- <file>..." 丢弃工作区的改动）
+
+        修改:         api/current.txt
+
+
+
+
