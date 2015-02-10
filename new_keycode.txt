@@ -1,0 +1,91 @@
+New keyCode 
+
+一	驱动部分
+
+1	在下列文件中定义
+
+	kernel/include/uapi/linux/input.h
+		#define KEY_ACC_ON                     0x221
+		#define KEY_ACC_OFF                    0x222
+
+	kernel/drivers/platform/msm/qpnp-power-on.c
+
+
+二	framework部分
+1	增加 keypad layout 文件键盘映射，linux 和 android key 映射
+
+	frameworks/base/data/keyboards/Generic.kl
+	key 545   ACC_ON
+	key 546   ACC_OFF
+
+	其中 545 是linux键码，ACC_ON 是 android 识别 key 值
+
+	注意所用版本和项目使用的KL文件，在adb shell中进入system/usr/keylyout/可以看到所用的KL，可以修改确认使用的KL
+	新增加设备名称的时候一般会使用generic.kl和qwerty.kl
+
+2	修改Java识别keycode
+
+	frameworks/native/include/input/KeycodeLabels.h
+	KEYCODES 数据结构后面增加
+	
+	{ "ACC_ON", 224 }
+	{ "ACC_OFF", 225 }
+
+3	修改Java 键盘事件
+
+	frameworks/base/core/java/android/view/KeyEvent.java
+
+	public static final int KEYCODE_ACC_ON   = 224;
+	public static final int KEYCODE_ACC_OFF   = 225;
+
+	最后的按键为新增的
+	private static final int LAST_KEYCODE           = KEYCODE_ACC_OFF;
+
+	以上/**/注释的code是android 非开放API或变量定义的时候，需要添加Java Doc的识别，否则要运行make update-api才能build通过
+
+	在 KEYCODE_SYMBOLIC_NAMES 中增加 
+	names.append(KEYCODE_ACC_ON, "KEYCODE_ACC_ON");
+	names.append(KEYCODE_ACC_OFF, "KEYCODE_ACC_OFF");
+
+	如果是系统按键，修改
+	frameworks/native/libs/input/Input.cpp
+		isSystemKey()增加case AKEYCODE_SMS:
+
+4	修改XML文件描述符
+	frameworks/base/core/res/res/values/attrs.xml
+		<enum name="KEYCODE_ACC_ON" value="224" />
+		<enum name="KEYCODE_ACC_OFF" value="225" />
+
+5	增加测试验证log在android
+
+	frameworks/base/policy/src/com/android/internal/policy/impl/PhoneWindowManager.java
+	在interceptKeyBeforeDispatching()增加
+
+
+三	注意
+	并不是所有的 linux keycode framework 都会支持处理，如果您需要增加很多按键，
+	就可能超出256（如Touch Panel的手势识别会用到很到键）
+
+	inputreader.cpp 
+		的KeyboardInputMapper 这个class的 process 函数会先判断是否是 isKeyboardOrGamepadKey.
+
+	这里面会对按键的大小进行判断，条件是：
+	1.小于272
+	2.大于352
+	3.大于等于256且小于272
+	4.大于等于288且小于320
+
+	满足其一即可。
+	否则会拦截掉，不会往inputDispatcher和phonewindowmanager.java走
+
+
+
+
+
+
+
+
+
+
+
+
