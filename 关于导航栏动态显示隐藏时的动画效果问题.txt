@@ -1,0 +1,24 @@
+
+关于导航栏动态显示隐藏时的动画效果问题
+
+
+目前没有解决，搜集的一些参考资料
+
+该属性是否有关
+android:clipOrientation=horizontal，android:gravity=right
+
+
+Android属性动画---Property Animation（六）
+http://www.2cto.com/kf/201207/139336.html
+这个很有参考价值，提供了可以修改的原来，依据
+
+
+NavigationBar调查
+http://blog.sina.com.cn/s/blog_bcc9bd250101rh70.html
+比较好的阐述了导航栏的显示过程
+
+
+Android常用动画ViewGroup的使用
+http://blog.csdn.net/deng0zhaotai/article/details/10931199
+
+
