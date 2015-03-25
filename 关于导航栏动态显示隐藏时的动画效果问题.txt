@@ -9,7 +9,7 @@ android:clipOrientation=horizontal，android:gravity=right
 
 
 Android属性动画---Property Animation（六）
-http://www.2cto.com/kf/201207/139336.html
+http://blog.csdn.net/think_soft/article/details/7724033
 这个很有参考价值，提供了可以修改的原来，依据
 
 
@@ -21,4 +21,7 @@ http://blog.sina.com.cn/s/blog_bcc9bd250101rh70.html
 Android常用动画ViewGroup的使用
 http://blog.csdn.net/deng0zhaotai/article/details/10931199
 
+
+Android WindowManager及其动画问题
+http://www.2cto.com/kf/201408/328978.html
 
